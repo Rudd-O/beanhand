@@ -9,7 +9,7 @@
 %define mybuildnumber %{?build_number}%{?!build_number:1}
 
 Name:           python-%{package_name}
-Version:        0.8.0
+Version:        0.8.1
 Release:        %{mybuildnumber}%{?dist}
 Summary:        AI-assisted CLI to help you work on your Beancount ledger
 

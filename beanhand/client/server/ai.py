@@ -35,12 +35,12 @@ def stream_reasoning_and_capture_output(stdout: IO[bytes]) -> str:
 
         if msg.get("finish"):
             break
-        elif msg.get("reasoning"):
+        elif "reasoning" in msg:
             sys.stderr.write(Fore.CYAN)
             sys.stderr.write(msg["reasoning"])
             sys.stderr.write(Style.RESET_ALL)
             sys.stderr.flush()
-        elif msg.get("output"):
+        elif "output" in msg:
             if not reasoning_over:
                 sys.stderr.write("\n")
                 sys.stderr.flush()

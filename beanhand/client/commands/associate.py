@@ -79,19 +79,21 @@ def run(cfg: Configuration, args: argparse.Namespace) -> None:  # noqa: C901
         # AI call (most commonly because an earlier receipt in this run moved it).
         try:
             fetched = ref.load(doc_vm)
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             raise Exception(
                 f"Association of {ref.arg} failed: file not found "
                 "(already processed earlier in this run?)"
-            ) from None
+            ) from e
 
         maybe_warn_collision(doc_vm, "unassociated", ref.arg, ref)
 
         # Step 1: Process the receipt via LLM (existing flow).
         try:
-            cmd, proc, stdin, stdout = ai_vm.help_associate_receipt(ref.filename, fetched)
+            cmd, proc, stdin, stdout = ai_vm.help_associate_receipt(
+                ref.filename, fetched
+            )
         except subprocess.CalledProcessError as e:
-            raise Exception(f"Error processing receipt: {e}") from e
+            raise Exception(f"Error processing {ref.arg}: {e}") from e
 
         llm_output = demarkdownify(stream_reasoning_and_capture_output(stdout))
 
